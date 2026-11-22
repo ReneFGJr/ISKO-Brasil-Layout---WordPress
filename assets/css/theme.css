@@ -438,14 +438,14 @@ a:hover {
 }
 
 .article-container {
-	max-width: 900px;
+	width: 100%;
+	max-width: none;
 	padding-top: 3.5rem;
 	padding-bottom: 5rem;
 }
 
 .article-content {
-	max-width: 760px;
-	margin: 0 auto;
+	max-width: none;
 }
 
 .back-link {

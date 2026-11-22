@@ -6,10 +6,22 @@
  */
 get_header();
 ?>
-<main id="conteudo" class="container article-container">
+<main id="conteudo">
 	<?php while ( have_posts() ) : the_post(); ?>
-		<article <?php post_class( 'article-content' ); ?>>
-			<a class="back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">← <?php esc_html_e( 'Voltar às notícias', 'isko' ); ?></a>
+		<section class="news-intro">
+			<div class="container">
+				<nav aria-label="<?php esc_attr_e( 'Navegação estrutural', 'isko' ); ?>">
+					<ol class="breadcrumb isko-breadcrumb">
+						<li class="breadcrumb-item"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Início', 'isko' ); ?></a></li>
+						<li class="breadcrumb-item"><a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/' ) ); ?>"><?php esc_html_e( 'Publicações', 'isko' ); ?></a></li>
+						<li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
+					</ol>
+				</nav>
+			</div>
+		</section>
+		<div class="container-fluid article-container">
+			<div class="row">
+			<article <?php post_class( 'article-content col-12' ); ?>>
 			<header class="article-header">
 				<div class="post-categories"><?php the_category( ' · ' ); ?></div>
 				<h1><?php the_title(); ?></h1>
@@ -31,7 +43,9 @@ get_header();
 			<?php if ( comments_open() || get_comments_number() ) : ?>
 				<?php comments_template(); ?>
 			<?php endif; ?>
-		</article>
+			</article>
+			</div>
+		</div>
 	<?php endwhile; ?>
 </main>
 <?php get_footer(); ?>
