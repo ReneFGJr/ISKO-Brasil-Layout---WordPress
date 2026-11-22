@@ -15,7 +15,7 @@ get_header();
 				<h1><?php the_title(); ?></h1>
 				<p class="post-meta"><?php echo esc_html( get_the_date() ); ?> <span aria-hidden="true">·</span> <?php the_author(); ?></p>
 			</header>
-			<?php if ( has_post_thumbnail() ) : ?>
+			<?php if ( has_post_thumbnail() && ! isko_post_content_has_image() ) : ?>
 				<figure class="article-featured-image"><?php the_post_thumbnail( 'full', array( 'class' => 'img-fluid' ) ); ?></figure>
 			<?php endif; ?>
 			<div class="entry-content"><?php the_content(); ?></div>

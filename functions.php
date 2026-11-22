@@ -125,3 +125,33 @@ function isko_excerpt_more( $more ) {
 	return '&hellip;';
 }
 add_filter( 'excerpt_more', 'isko_excerpt_more' );
+
+/**
+ * Check whether a post already contains an image in its content.
+ *
+ * @param int|WP_Post|null $post Post ID or object. Defaults to the current post.
+ * @return bool
+ */
+function isko_post_content_has_image( $post = null ) {
+	$post = get_post( $post );
+
+	if ( ! $post instanceof WP_Post ) {
+		return false;
+	}
+
+	$content = $post->post_content;
+
+	if ( preg_match( '/<img\b/i', $content ) || has_shortcode( $content, 'gallery' ) ) {
+		return true;
+	}
+
+	$image_blocks = array( 'core/image', 'core/gallery', 'core/media-text', 'core/cover' );
+
+	foreach ( $image_blocks as $block_name ) {
+		if ( has_block( $block_name, $content ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
