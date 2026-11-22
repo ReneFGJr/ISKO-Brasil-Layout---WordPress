@@ -19,7 +19,7 @@ get_header();
 				</nav>
 			</div>
 		</section>
-		<div class="container-fluid article-container">
+		<div class="container article-container">
 			<div class="row">
 			<article <?php post_class( 'article-content col-12' ); ?>>
 			<header class="article-header">
