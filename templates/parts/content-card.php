@@ -7,8 +7,9 @@
 ?>
 <article <?php post_class( 'news-card h-100' ); ?>>
 	<a class="news-card-image" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-		<?php if ( has_post_thumbnail() ) : ?>
-			<?php the_post_thumbnail( 'medium_large', array( 'class' => 'img-fluid' ) ); ?>
+		<?php $card_image = isko_get_post_card_image(); ?>
+		<?php if ( $card_image ) : ?>
+			<?php echo wp_kses_post( $card_image ); ?>
 		<?php else : ?>
 			<span class="card-placeholder">ISKO</span>
 		<?php endif; ?>

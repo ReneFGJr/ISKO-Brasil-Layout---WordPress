@@ -9,9 +9,12 @@ get_header();
 <main id="conteudo">
 	<section class="news-intro">
 		<div class="container">
-			<p class="eyebrow"><?php esc_html_e( 'ISKO · Publicações', 'isko' ); ?></p>
-			<h1><?php esc_html_e( 'Notícias e ideias', 'isko' ); ?></h1>
-			<p class="intro-copy"><?php esc_html_e( 'Acompanhe as novidades, eventos e publicações da associação.', 'isko' ); ?></p>
+			<nav aria-label="<?php esc_attr_e( 'Navegação estrutural', 'isko' ); ?>">
+				<ol class="breadcrumb isko-breadcrumb">
+					<li class="breadcrumb-item"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Início', 'isko' ); ?></a></li>
+					<li class="breadcrumb-item active" aria-current="page"><?php esc_html_e( 'Publicações', 'isko' ); ?></li>
+				</ol>
+			</nav>
 		</div>
 	</section>
 
@@ -43,7 +46,7 @@ get_header();
 		?>
 
 		<?php if ( $featured_query->have_posts() ) : ?>
-			<div id="isko-featured-carousel" class="carousel slide featured-carousel" aria-label="<?php esc_attr_e( 'Publicações em destaque', 'isko' ); ?>">
+			<div id="isko-featured-carousel" class="carousel slide featured-carousel" data-bs-ride="carousel" data-bs-interval="5000" aria-label="<?php esc_attr_e( 'Publicações em destaque', 'isko' ); ?>">
 				<div class="carousel-inner">
 					<?php
 					$featured_number = 0;
@@ -54,13 +57,13 @@ get_header();
 						<div class="carousel-item<?php echo 1 === $featured_number ? ' active' : ''; ?>">
 							<article <?php post_class( 'featured-card row g-0 align-items-stretch' ); ?>>
 								<?php if ( has_post_thumbnail() ) : ?>
-									<a class="featured-image col-lg-7" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-										<?php the_post_thumbnail( 'large', array( 'class' => 'img-fluid' ) ); ?>
+									<a class="featured-image" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+										<?php the_post_thumbnail( 'full', array( 'class' => 'img-fluid' ) ); ?>
 									</a>
 								<?php else : ?>
-									<div class="featured-image featured-placeholder col-lg-7" aria-hidden="true"><span>ISKO</span></div>
+									<div class="featured-image featured-placeholder" aria-hidden="true"><span>ISKO</span></div>
 								<?php endif; ?>
-								<div class="featured-content col-lg-5">
+								<div class="featured-content">
 									<p class="eyebrow"><?php esc_html_e( 'Em destaque', 'isko' ); ?></p>
 									<p class="post-meta"><?php echo esc_html( get_the_date() ); ?></p>
 									<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>

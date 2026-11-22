@@ -155,3 +155,60 @@ function isko_post_content_has_image( $post = null ) {
 
 	return false;
 }
+
+/**
+ * Return the best available image HTML for a publication card.
+ *
+ * The featured image takes priority, followed by the first image in the post
+ * content and then the first image attached to the post.
+ *
+ * @param int|WP_Post|null $post Post ID or object. Defaults to the current post.
+ * @param string           $size WordPress image size.
+ * @return string
+ */
+function isko_get_post_card_image( $post = null, $size = 'medium_large' ) {
+	$post = get_post( $post );
+
+	if ( ! $post instanceof WP_Post ) {
+		return '';
+	}
+
+	if ( has_post_thumbnail( $post ) ) {
+		return get_the_post_thumbnail(
+			$post,
+			$size,
+			array(
+				'class'   => 'img-fluid',
+				'loading' => 'lazy',
+			)
+		);
+	}
+
+	if ( preg_match( '/<img[^>]+src=["\']([^"\']+)["\']/i', $post->post_content, $matches ) ) {
+		$image_url = esc_url( html_entity_decode( $matches[1], ENT_QUOTES, get_bloginfo( 'charset' ) ) );
+
+		if ( $image_url ) {
+			return sprintf(
+				'<img class="img-fluid" src="%1$s" alt="%2$s" loading="lazy">',
+				$image_url,
+				esc_attr( get_the_title( $post ) )
+			);
+		}
+	}
+
+	$attachments = get_attached_media( 'image', $post );
+	if ( $attachments ) {
+		$attachment = reset( $attachments );
+		return wp_get_attachment_image(
+			$attachment->ID,
+			$size,
+			false,
+			array(
+				'class'   => 'img-fluid',
+				'loading' => 'lazy',
+			)
+		);
+	}
+
+	return '';
+}
