@@ -152,6 +152,28 @@ a:hover {
 	padding-bottom: 5.5rem;
 }
 
+.featured-carousel {
+	margin-bottom: 2.5rem;
+}
+
+.featured-carousel .carousel-control-prev,
+.featured-carousel .carousel-control-next {
+	top: 50%;
+	width: 3rem;
+	height: 3rem;
+	margin: 0 0.75rem;
+	border-radius: 50%;
+	background: rgba(14, 111, 103, 0.9);
+	transform: translateY(-50%);
+	opacity: 1;
+}
+
+.featured-carousel .carousel-control-prev:focus-visible,
+.featured-carousel .carousel-control-next:focus-visible {
+	outline: 3px solid #fff;
+	outline-offset: 2px;
+}
+
 .featured-card {
 	overflow: hidden;
 	min-height: 390px;
@@ -525,6 +547,11 @@ a:hover {
 	.featured-image img {
 		min-height: 270px;
 		max-height: 360px;
+	}
+
+	.featured-carousel .carousel-control-prev,
+	.featured-carousel .carousel-control-next {
+		top: 10rem;
 	}
 }
 

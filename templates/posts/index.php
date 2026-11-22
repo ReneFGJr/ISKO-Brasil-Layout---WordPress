@@ -16,16 +16,42 @@ get_header();
 	</section>
 
 	<section class="container news-section" aria-label="<?php esc_attr_e( 'Publicações recentes', 'isko' ); ?>">
-		<?php if ( have_posts() ) : ?>
-			<div class="row g-4">
-				<?php
-				$post_number = 0;
-				while ( have_posts() ) :
-					the_post();
-					$post_number++;
-					?>
-					<?php if ( 1 === $post_number ) : ?>
-						<div class="col-12">
+		<?php
+		$featured_query = new WP_Query(
+			array(
+				'post_type'           => 'post',
+				'post_status'         => 'publish',
+				'posts_per_page'      => -1,
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'tax_query'           => array(
+					'relation' => 'OR',
+					array(
+						'taxonomy' => 'category',
+						'field'    => 'slug',
+						'terms'    => 'destaque',
+					),
+					array(
+						'taxonomy' => 'post_tag',
+						'field'    => 'slug',
+						'terms'    => 'destaque',
+					),
+				),
+			)
+		);
+		$featured_post_ids = wp_list_pluck( $featured_query->posts, 'ID' );
+		?>
+
+		<?php if ( $featured_query->have_posts() ) : ?>
+			<div id="isko-featured-carousel" class="carousel slide featured-carousel" aria-label="<?php esc_attr_e( 'Publicações em destaque', 'isko' ); ?>">
+				<div class="carousel-inner">
+					<?php
+					$featured_number = 0;
+					while ( $featured_query->have_posts() ) :
+						$featured_query->the_post();
+						$featured_number++;
+						?>
+						<div class="carousel-item<?php echo 1 === $featured_number ? ' active' : ''; ?>">
 							<article <?php post_class( 'featured-card row g-0 align-items-stretch' ); ?>>
 								<?php if ( has_post_thumbnail() ) : ?>
 									<a class="featured-image col-lg-7" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
@@ -43,11 +69,35 @@ get_header();
 								</div>
 							</article>
 						</div>
-					<?php else : ?>
-						<div class="col-md-6 col-lg-4">
-							<?php get_template_part( 'templates/parts/content', 'card' ); ?>
-						</div>
-					<?php endif; ?>
+					<?php endwhile; ?>
+				</div>
+
+				<?php if ( $featured_query->post_count > 1 ) : ?>
+					<button class="carousel-control-prev" type="button" data-bs-target="#isko-featured-carousel" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden"><?php esc_html_e( 'Destaque anterior', 'isko' ); ?></span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#isko-featured-carousel" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden"><?php esc_html_e( 'Próximo destaque', 'isko' ); ?></span>
+					</button>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+		<?php wp_reset_postdata(); ?>
+
+		<?php if ( have_posts() ) : ?>
+			<div class="row g-4">
+				<?php
+				while ( have_posts() ) :
+					the_post();
+					if ( in_array( get_the_ID(), $featured_post_ids, true ) ) {
+						continue;
+					}
+					?>
+					<div class="col-md-6 col-lg-4">
+						<?php get_template_part( 'templates/parts/content', 'card' ); ?>
+					</div>
 				<?php endwhile; ?>
 			</div>
 			<div class="posts-pagination">
