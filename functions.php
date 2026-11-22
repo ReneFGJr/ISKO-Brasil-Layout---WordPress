@@ -5,6 +5,8 @@
  * @package ISKO
  */
 
+require_once get_template_directory() . '/inc/class-isko-github-updater.php';
+
 function isko_setup() {
 	load_theme_textdomain( 'isko', get_template_directory() . '/languages' );
 
